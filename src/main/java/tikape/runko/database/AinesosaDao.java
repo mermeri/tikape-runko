@@ -11,20 +11,22 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import tikape.runko.domain.Drinkki;
-
-public class DrinkkiDao implements Dao<Drinkki, Integer> {
-
+import tikape.runko.domain.Ainesosa;
+/**
+ *
+ * @author Meri
+ */
+public class AinesosaDao implements Dao<Ainesosa, Integer>{
     private Database database;
-
-    public DrinkkiDao(Database database) {
-        this.database = database;
+    
+    public AinesosaDao(Database db) {
+        this.database = db;
     }
 
     @Override
-    public Drinkki findOne(Integer key) throws SQLException {
+    public Ainesosa findOne(Integer key) throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Drinkki WHERE id = ?");
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Ainesosa WHERE id = ?");
         stmt.setObject(1, key);
 
         ResultSet rs = stmt.executeQuery();
@@ -36,7 +38,7 @@ public class DrinkkiDao implements Dao<Drinkki, Integer> {
         Integer id = rs.getInt("id");
         String nimi = rs.getString("nimi");
 
-        Drinkki o = new Drinkki(id, nimi);
+        Ainesosa o = new Ainesosa(id, nimi);
 
         rs.close();
         stmt.close();
@@ -46,31 +48,30 @@ public class DrinkkiDao implements Dao<Drinkki, Integer> {
     }
 
     @Override
-    public List<Drinkki> findAll() throws SQLException {
-
+    public List<Ainesosa> findAll() throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Drinkki");
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Ainesosa");
 
         ResultSet rs = stmt.executeQuery();
-        List<Drinkki> drinkit = new ArrayList<>();
+        List<Ainesosa> ainesosat = new ArrayList<>();
         while (rs.next()) {
             Integer id = rs.getInt("id");
             String nimi = rs.getString("nimi");
 
-            drinkit.add(new Drinkki(id, nimi));
+            ainesosat.add(new Ainesosa(id, nimi));
         }
 
         rs.close();
         stmt.close();
         connection.close();
 
-        return drinkit;
+        return ainesosat;
     }
 
     @Override
     public void delete(Integer key) throws SQLException {
         Connection c = database.getConnection();
-        PreparedStatement stmt = c.prepareStatement("DELETE FROM Drinkki WHERE id = ?");
+        PreparedStatement stmt = c.prepareStatement("DELETE FROM Ainesosa WHERE id = ?");
 
         stmt.setInt(1, key);
         stmt.executeUpdate();
@@ -78,34 +79,33 @@ public class DrinkkiDao implements Dao<Drinkki, Integer> {
         stmt.close();
         c.close();
     }
-    
+
     @Override
-    public Drinkki saveOrUpdate(Drinkki object) throws SQLException {
-        
+    public Ainesosa saveOrUpdate(Ainesosa object) throws SQLException {
         if (object.getId() == null) {
             Connection c = database.getConnection();
-            PreparedStatement stmt = c.prepareStatement("INSERT INTO Drinkki(nimi) VALUES (?)");
+            PreparedStatement stmt = c.prepareStatement("INSERT INTO Ainesosa(nimi) VALUES (?)");
             stmt.setString(1, object.getNimi());
         
             stmt.executeUpdate();
             stmt.close();
         
-            stmt = c.prepareStatement("SELECT * FROM Drinkki WHERE nimi = ?");
+            stmt = c.prepareStatement("SELECT * FROM Ainesosa WHERE nimi = ?");
             stmt.setString(1, object.getNimi());
         
             ResultSet rs = stmt.executeQuery();
             rs.next();
         
-            Drinkki d = new Drinkki(rs.getInt("id"), rs.getString("nimi"));
+            Ainesosa a = new Ainesosa(rs.getInt("id"), rs.getString("nimi"));
         
             stmt.close();
             rs.close();
             c.close();
         
-            return d;
+            return a;
         } else {
             Connection c = database.getConnection();
-            PreparedStatement stmt = c.prepareStatement("UPDATE Drinkki SET nimi = ? WHERE id = ?");
+            PreparedStatement stmt = c.prepareStatement("UPDATE Ainesosa SET nimi = ? WHERE id = ?");
             stmt.setString(1, object.getNimi());
             stmt.setInt(2, object.getId());
             
@@ -116,4 +116,5 @@ public class DrinkkiDao implements Dao<Drinkki, Integer> {
             return object;
         }
     }
+    
 }

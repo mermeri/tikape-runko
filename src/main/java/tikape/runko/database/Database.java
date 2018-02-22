@@ -15,7 +15,7 @@ public class Database {
     public Connection getConnection() throws SQLException {
         return DriverManager.getConnection(databaseAddress);
     }
-
+    
     public void init() {
         List<String> lauseet = sqliteLauseet();
 
@@ -46,4 +46,5 @@ public class Database {
 
         return lista;
     }
+    
 }
