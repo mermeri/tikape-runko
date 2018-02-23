@@ -15,30 +15,23 @@ public class Main {
             Spark.port(Integer.valueOf(System.getenv("PORT")));
         }
         
-        Database database = new Database("jdbc:sqlite:opiskelijat.db");
+        Database database = new Database("jdbc:sqlite:drinkkiarkisto.db");
         database.init();
 
-        DrinkkiDao opiskelijaDao = new DrinkkiDao(database);
-
-        get("/", (req, res) -> {
-            HashMap map = new HashMap<>();
-            map.put("viesti", "tervehdys");
-
-            return new ModelAndView(map, "index");
-        }, new ThymeleafTemplateEngine());
+        DrinkkiDao drinkkiDao = new DrinkkiDao(database);
 
         get("/opiskelijat", (req, res) -> {
             HashMap map = new HashMap<>();
-            map.put("opiskelijat", opiskelijaDao.findAll());
+            map.put("opiskelijat", drinkkiDao.findAll());
 
             return new ModelAndView(map, "opiskelijat");
         }, new ThymeleafTemplateEngine());
 
-        get("/opiskelijat/:id", (req, res) -> {
+        get("/drinkit/:id", (req, res) -> {
             HashMap map = new HashMap<>();
-            map.put("opiskelija", opiskelijaDao.findOne(Integer.parseInt(req.params("id"))));
+            map.put("drinkki", drinkkiDao.findOne(Integer.parseInt(req.params("id"))));
 
-            return new ModelAndView(map, "opiskelija");
+            return new ModelAndView(map, "drinkki");
         }, new ThymeleafTemplateEngine());
     }
 }
