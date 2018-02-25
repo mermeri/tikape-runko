@@ -9,11 +9,11 @@ package tikape.runko.domain;
  *
  * @author Meri
  */
-public class Ainesosa {
+public class RaakaAine {
     private Integer id;
     private String nimi;
     
-    public Ainesosa(Integer id, String nimi) {
+    public RaakaAine(Integer id, String nimi) {
         this.id = id;
         this.nimi = nimi;
     }

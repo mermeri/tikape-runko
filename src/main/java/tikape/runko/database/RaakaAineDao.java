@@ -11,22 +11,21 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import tikape.runko.domain.Ainesosa;
+import tikape.runko.domain.RaakaAine;
 /**
  *
  * @author Meri
  */
-public class AinesosaDao implements Dao<Ainesosa, Integer>{
+public class RaakaAineDao{
     private Database database;
     
-    public AinesosaDao(Database db) {
+    public RaakaAineDao(Database db) {
         this.database = db;
     }
 
-    @Override
-    public Ainesosa findOne(Integer key) throws SQLException {
+    public RaakaAine findOne(Integer key) throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Ainesosa WHERE id = ?");
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM RaakaAine WHERE id = ?");
         stmt.setObject(1, key);
 
         ResultSet rs = stmt.executeQuery();
@@ -38,7 +37,7 @@ public class AinesosaDao implements Dao<Ainesosa, Integer>{
         Integer id = rs.getInt("id");
         String nimi = rs.getString("nimi");
 
-        Ainesosa o = new Ainesosa(id, nimi);
+        RaakaAine o = new RaakaAine(id, nimi);
 
         rs.close();
         stmt.close();
@@ -47,18 +46,17 @@ public class AinesosaDao implements Dao<Ainesosa, Integer>{
         return o;
     }
 
-    @Override
-    public List<Ainesosa> findAll() throws SQLException {
+    public List<RaakaAine> findAll() throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Ainesosa");
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM RaakaAine");
 
         ResultSet rs = stmt.executeQuery();
-        List<Ainesosa> ainesosat = new ArrayList<>();
+        List<RaakaAine> ainesosat = new ArrayList<>();
         while (rs.next()) {
             Integer id = rs.getInt("id");
             String nimi = rs.getString("nimi");
 
-            ainesosat.add(new Ainesosa(id, nimi));
+            ainesosat.add(new RaakaAine(id, nimi));
         }
 
         rs.close();
@@ -68,10 +66,9 @@ public class AinesosaDao implements Dao<Ainesosa, Integer>{
         return ainesosat;
     }
 
-    @Override
     public void delete(Integer key) throws SQLException {
         Connection c = database.getConnection();
-        PreparedStatement stmt = c.prepareStatement("DELETE FROM Ainesosa WHERE id = ?");
+        PreparedStatement stmt = c.prepareStatement("DELETE FROM RaakaAine WHERE id = ?");
 
         stmt.setInt(1, key);
         stmt.executeUpdate();
@@ -80,23 +77,22 @@ public class AinesosaDao implements Dao<Ainesosa, Integer>{
         c.close();
     }
 
-    @Override
-    public Ainesosa saveOrUpdate(Ainesosa object) throws SQLException {
+    public RaakaAine saveOrUpdate(RaakaAine object) throws SQLException {
         if (object.getId() == null) {
             Connection c = database.getConnection();
-            PreparedStatement stmt = c.prepareStatement("INSERT INTO Ainesosa(nimi) VALUES (?)");
+            PreparedStatement stmt = c.prepareStatement("INSERT INTO RaakaAine VALUES (?)");
             stmt.setString(1, object.getNimi());
         
             stmt.executeUpdate();
             stmt.close();
         
-            stmt = c.prepareStatement("SELECT * FROM Ainesosa WHERE nimi = ?");
+            stmt = c.prepareStatement("SELECT * FROM RaakaAine WHERE nimi = ?");
             stmt.setString(1, object.getNimi());
         
             ResultSet rs = stmt.executeQuery();
             rs.next();
         
-            Ainesosa a = new Ainesosa(rs.getInt("id"), rs.getString("nimi"));
+            RaakaAine a = new RaakaAine(rs.getInt("id"), rs.getString("nimi"));
         
             stmt.close();
             rs.close();
@@ -105,7 +101,7 @@ public class AinesosaDao implements Dao<Ainesosa, Integer>{
             return a;
         } else {
             Connection c = database.getConnection();
-            PreparedStatement stmt = c.prepareStatement("UPDATE Ainesosa SET nimi = ? WHERE id = ?");
+            PreparedStatement stmt = c.prepareStatement("UPDATE RaakaAine SET nimi = ? WHERE id = ?");
             stmt.setString(1, object.getNimi());
             stmt.setInt(2, object.getId());
             
@@ -116,5 +112,7 @@ public class AinesosaDao implements Dao<Ainesosa, Integer>{
             return object;
         }
     }
+
+    
     
 }

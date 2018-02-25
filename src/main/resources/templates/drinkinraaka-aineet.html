@@ -10,9 +10,16 @@
 
 
         <ul>
-            <li th:each="Raaka-aine : ${Raaka-aineet}">
-                <span th:text="${Raaka-aine.name}">Raaka-aine</span>
-                <span th:text="${Raaka-aine.maara}">Raaka-aine</span>
+            <li th:each="Drinkki : ${drinkit}">
+
+                <a th:href="@{~/drinkit/{id}(id=${Drinkki.id})}">
+                    <span th:text="${drinkki.name}">drinkki</span>
+                </a>
+                <a th:href="@{~/drinkit/{id}(id=${Drinkki.id})}">
+                    <span th:text="${Drinkki.name}">Drinkki</span>
+                    (poista)
+                </a>
+
             </li>
         </ul>
 
