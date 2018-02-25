@@ -1,0 +1,20 @@
+ 
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Drinkin_raaka-aineet</title>
+    </head>
+    <body>
+        <h1 th:text="${drinkki.name}"></h1>
+
+
+
+        <ul>
+            <li th:each="Raaka-aine : ${Raaka-aineet}">
+                <span th:text="${Raaka-aine.name}">Raaka-aine</span>
+                <span th:text="${Raaka-aine.maara}">Raaka-aine</span>
+            </li>
+        </ul>
+
+    </body>
+</html>
