@@ -5,8 +5,10 @@ import spark.ModelAndView;
 import spark.Spark;
 import static spark.Spark.*;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
+import tikape.runko.database.AinesosaDao;
 import tikape.runko.database.Database;
 import tikape.runko.database.DrinkkiDao;
+import tikape.runko.domain.Ainesosa;
 
 public class Main {
 
@@ -19,6 +21,7 @@ public class Main {
         database.init();
 
         DrinkkiDao drinkkiDao = new DrinkkiDao(database);
+        AinesosaDao ainesosaDao = new AinesosaDao(database);
 
         get("/alku", (req, res) -> {
             HashMap map = new HashMap<>();
@@ -46,6 +49,23 @@ public class Main {
             map.put("drinkit", drinkkiDao.findOne(Integer.parseInt(req.params("id"))));
 
             return new ModelAndView(map, "drinkit");
+        }, new ThymeleafTemplateEngine());
+        
+        Spark.post("/raaka-aineet/", (req, res) -> {
+            HashMap map = new HashMap<>();
+            map.put("raaka-aineet", ainesosaDao.saveOrUpdate(new Ainesosa(null, req.queryParams("nimi"))));
+            res.redirect("/raaka-aineet/");
+
+            return new ModelAndView(map, "raaka-aineet");
+        }, new ThymeleafTemplateEngine());
+        
+        //tässä templatena post komento
+        Spark.post("/raaka-aineet/", (req, res) -> {
+            HashMap map = new HashMap<>();
+            map.put("raaka-aineet", ainesosaDao.saveOrUpdate(new Ainesosa(null, req.queryParams("nimi"))));
+            res.redirect("/raaka-aineet/");
+
+            return new ModelAndView(map, "raaka-aineet");
         }, new ThymeleafTemplateEngine());
     }
 }
