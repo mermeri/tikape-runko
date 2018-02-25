@@ -17,10 +17,11 @@ public class Main {
         }
 
         Database database = new Database("jdbc:sqlite:db/drinkkiarkisto.db");
-        database.init();
+        
 
         DrinkkiDao drinkkiDao = new DrinkkiDao(database);
         RaakaAineDao raakaAineDao = new RaakaAineDao(database);
+        database.init();
 
         Spark.get("/alku", (req, res) -> {
             HashMap map = new HashMap<>();
@@ -32,8 +33,9 @@ public class Main {
         Spark.get("/raaka-aineet/", (req, res) -> {
             HashMap map = new HashMap<>();
             map.put("raaka-aineet", raakaAineDao.findAll());
-            
+            System.out.println("sivu päivitetty");
             return new ModelAndView(map, "raaka-aineet");
+            
         }, new ThymeleafTemplateEngine());
 
         Spark.get("/drinkinraaka-aineet/", (req, res) -> {
@@ -55,6 +57,7 @@ public class Main {
             raakaAineDao.saveOrUpdate(new RaakaAine(-1, req.queryParams("nimi")));
             System.out.println("lisätään aine");
             res.redirect("/raaka-aineet/");
+            System.out.println("ohjataan päivittyneelle sivulle");
             return"";
         });
         

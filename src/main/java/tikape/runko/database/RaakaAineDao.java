@@ -16,7 +16,7 @@ import tikape.runko.domain.RaakaAine;
  *
  * @author Meri
  */
-public class RaakaAineDao{
+public class RaakaAineDao implements Dao<RaakaAine, Integer>{
     private Database database;
     
     public RaakaAineDao(Database db) {
@@ -78,19 +78,25 @@ public class RaakaAineDao{
     }
 
     public RaakaAine saveOrUpdate(RaakaAine object) throws SQLException {
-        if (object.getId() == null) {
+        RaakaAine findOne = findOne(object.getId());
+        
+        if (findOne == null) {
+            
             Connection c = database.getConnection();
-            PreparedStatement stmt = c.prepareStatement("INSERT INTO RaakaAine VALUES (?)");
+            PreparedStatement stmt = c.prepareStatement("INSERT INTO RaakaAine(nimi) VALUES (?)");
             stmt.setString(1, object.getNimi());
         
             stmt.executeUpdate();
             stmt.close();
         
             stmt = c.prepareStatement("SELECT * FROM RaakaAine WHERE nimi = ?");
+            
             stmt.setString(1, object.getNimi());
-        
+            
+            
             ResultSet rs = stmt.executeQuery();
             rs.next();
+            
         
             RaakaAine a = new RaakaAine(rs.getInt("id"), rs.getString("nimi"));
         
