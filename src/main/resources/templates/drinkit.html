@@ -33,9 +33,9 @@
             Lisättävä raaka-aine<br/>
 
 
-            <select name="raakaAine">
+            <select id="raakaAineId" name="raakaAine">
 
-                <option th:each="RaakaAine: ${RaakaAineet}" th:text="${RaakaAine.nimi}">
+                <option th:each="RaakaAine: ${RaakaAineet}" th:text="${RaakaAine.nimi}" th:values="${RaakaAine.id}">
 
                 </option>
 

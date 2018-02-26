@@ -12,6 +12,9 @@
                     <span th:text="${Drinkki.nimi}">Drinkki</span>
                 </a>
                 <form method="POST" th:action="@{~/{DrinkkiId}/delete(DrinkkiId=${Drinkki.id})}"><input type="submit" value="Poista"/></form>
+                <a th:href="@{~/lisaadrinkkiaine/{id}(id=${Drinkki.id})}">
+                    <span th:text="lisaa">Lisaa ohje</span>
+                </a>
             </li>
         </ul>
 

@@ -20,12 +20,10 @@ public class Main {
         }
 
         Database database = new Database("jdbc:sqlite:db/drinkkiarkisto.db");
-        
+
         DrinkkiDao drinkkiDao = new DrinkkiDao(database);
         RaakaAineDao raakaAineDao = new RaakaAineDao(database);
         OhjeDao ohjeDao = new OhjeDao(database);
-        
-        
 
         Spark.get("/", (req, res) -> {
             HashMap map = new HashMap<>();
@@ -39,9 +37,17 @@ public class Main {
             map.put("RaakaAineet", raakaAineDao.findAll());
             System.out.println("sivu päivitetty");
             return new ModelAndView(map, "raaka-aineet");
-            
+
         }, new ThymeleafTemplateEngine());
 
+        Spark.get("/lisaadrinkkiaine/:id", (req, res) -> {
+            HashMap map = new HashMap<>();
+            map.put("drinkit", drinkkiDao.findOne(Integer.parseInt(req.params(":id"))));
+            map.put("RaakaAineet", raakaAineDao.findAll());
+            System.out.println("sivu päivitetty");
+            return new ModelAndView(map, "lisaadrinkkiaine");
+
+        }, new ThymeleafTemplateEngine());
 
         Spark.get("/drinkit/:id", (req, res) -> {
             HashMap map = new HashMap<>();
@@ -49,7 +55,7 @@ public class Main {
             map.put("RaakaAineet", raakaAineDao.findAll());
             return new ModelAndView(map, "drinkinraaka-aineet");
         }, new ThymeleafTemplateEngine());
-        
+
         Spark.get("/drinkit/", (req, res) -> {
             HashMap map = new HashMap<>();
             map.put("drinkit", drinkkiDao.findAll());
@@ -57,46 +63,62 @@ public class Main {
 
             return new ModelAndView(map, "drinkit");
         }, new ThymeleafTemplateEngine());
-        
+
         Spark.post("/raaka-aineet/", (req, res) -> {
             HashMap map = new HashMap<>();
             raakaAineDao.saveOrUpdate(new RaakaAine(-1, req.queryParams("aine")));
-            
+
             System.out.println("lisätään aine");
             res.redirect("/raaka-aineet/");
             System.out.println("ohjataan päivittyneelle sivulle");
-            return"";
+            return "";
         });
-        
+
         Spark.post("/raaka-aineet/:id/delete", (req, res) -> {
             HashMap map = new HashMap<>();
             raakaAineDao.delete(Integer.parseInt(req.params(":id")));
             System.out.println("poistetaan aine");
             res.redirect("/raaka-aineet/");
             System.out.println("ohjataan päivittyneelle sivulle");
-            return"";
+            return "";
         });
-        
+
         Spark.post("/:id/delete", (req, res) -> {
             HashMap map = new HashMap<>();
             drinkkiDao.delete(Integer.parseInt(req.params(":id")));
             System.out.println("poistetaan drinkki");
             res.redirect("/");
             System.out.println("ohjataan päivittyneelle sivulle");
-            return"";
+            return "";
         });
-        
+
+        Spark.post("/:id/drinkinraaka-aineet", (req, res) -> {
+            HashMap map = new HashMap<>();
+
+            res.redirect("/drinkinraaka-aineet/");
+            System.out.println("ohjataan sivulle");
+            return "";
+        });
+
         Spark.post("/drinkit/", (req, res) -> {
             HashMap map = new HashMap<>();
             drinkkiDao.saveOrUpdate(new Drinkki(-1, req.queryParams("aine")));
             System.out.println("lisätään drinkki");
             res.redirect("/drinkit/");
             System.out.println("ohjataan päivittyneelle sivulle");
-            return"";
+            return "";
         });
-        
-        
-        
-        
+
+        Spark.post("/lisaadrinkkiaine/:id", (req, res) -> {
+            HashMap map = new HashMap<>();
+            System.out.println(req.params("name"));
+            ohjeDao.saveOrUpdate(new Ohje(Integer.parseInt(req.params("name")),
+                    Integer.parseInt(req.params(":id")),
+                    Integer.parseInt(req.queryParams("järjestys")), Integer.parseInt(req.queryParams("määrä")), req.queryParams("ohje")));
+
+            res.redirect("/lisaadrinkkiaine/:id");
+            return "";
+        });
+
     }
 }
