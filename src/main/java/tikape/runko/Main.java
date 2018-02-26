@@ -60,7 +60,17 @@ public class Main {
         Spark.post("/raaka-aineet/", (req, res) -> {
             HashMap map = new HashMap<>();
             raakaAineDao.saveOrUpdate(new RaakaAine(-1, req.queryParams("aine")));
+            raakaAineDao.delete(Integer.parseInt(req.queryParams("id")));
             System.out.println("lisätään aine");
+            res.redirect("/raaka-aineet/");
+            System.out.println("ohjataan päivittyneelle sivulle");
+            return"";
+        });
+        
+        Spark.post("/raaka-aineet/:id/delete", (req, res) -> {
+            HashMap map = new HashMap<>();
+            raakaAineDao.delete(Integer.parseInt(req.params(":id")));
+            System.out.println("poistetaan aine");
             res.redirect("/raaka-aineet/");
             System.out.println("ohjataan päivittyneelle sivulle");
             return"";
