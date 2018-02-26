@@ -12,13 +12,10 @@ import tikape.runko.domain.RaakaAine;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        if (System.getenv("PORT") != null) {
-            Spark.port(Integer.valueOf(System.getenv("PORT")));
-        }
+        
 
         Database database = new Database("jdbc:sqlite:db/drinkkiarkisto.db");
         
-
         DrinkkiDao drinkkiDao = new DrinkkiDao(database);
         RaakaAineDao raakaAineDao = new RaakaAineDao(database);
         database.init();
@@ -51,6 +48,8 @@ public class Main {
 
             return new ModelAndView(map, "drinkit");
         }, new ThymeleafTemplateEngine());
+        
+        
         
         Spark.post("/raaka-aineet/", (req, res) -> {
             HashMap map = new HashMap<>();
