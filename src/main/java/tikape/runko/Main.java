@@ -27,29 +27,30 @@ public class Main {
         
         database.init();
 
-        Spark.get("/alku", (req, res) -> {
+        Spark.get("/", (req, res) -> {
             HashMap map = new HashMap<>();
-            map.put("alku", drinkkiDao.findAll());
+            map.put("drinkit", drinkkiDao.findAll());
 
             return new ModelAndView(map, "alku");
         }, new ThymeleafTemplateEngine());
 
         Spark.get("/raaka-aineet/", (req, res) -> {
             HashMap map = new HashMap<>();
-            map.put("raaka-aineet", raakaAineDao.findAll());
+            map.put("RaakaAineet", raakaAineDao.findAll());
             System.out.println("sivu päivitetty");
             return new ModelAndView(map, "raaka-aineet");
             
         }, new ThymeleafTemplateEngine());
 
-        Spark.get("/drinkinraaka-aineet/", (req, res) -> {
-            HashMap map = new HashMap<>();
-            map.put("drinkinraaka-aineet", drinkkiDao.findAll());
-
-            return new ModelAndView(map, "drinkinraaka-aineet");
-        }, new ThymeleafTemplateEngine());
 
         Spark.get("/drinkit/:id", (req, res) -> {
+            HashMap map = new HashMap<>();
+            map.put("drinkit", drinkkiDao.findOne(Integer.parseInt(req.params(":id"))));
+
+            return new ModelAndView(map, "drinkinkinraaka-aineet");
+        }, new ThymeleafTemplateEngine());
+        
+        Spark.get("/drinkit/", (req, res) -> {
             HashMap map = new HashMap<>();
             map.put("drinkit", drinkkiDao.findOne(Integer.parseInt(req.params("id"))));
 
@@ -58,7 +59,7 @@ public class Main {
         
         Spark.post("/raaka-aineet/", (req, res) -> {
             HashMap map = new HashMap<>();
-            raakaAineDao.saveOrUpdate(new RaakaAine(-1, req.queryParams("nimi")));
+            raakaAineDao.saveOrUpdate(new RaakaAine(-1, req.queryParams("aine")));
             System.out.println("lisätään aine");
             res.redirect("/raaka-aineet/");
             System.out.println("ohjataan päivittyneelle sivulle");

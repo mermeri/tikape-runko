@@ -12,13 +12,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import tikape.runko.domain.RaakaAine;
+
 /**
  *
  * @author Meri
  */
-public class RaakaAineDao implements Dao<RaakaAine, Integer>{
+public class RaakaAineDao implements Dao<RaakaAine, Integer> {
+
     private Database database;
-    
+
     public RaakaAineDao(Database db) {
         this.database = db;
     }
@@ -47,11 +49,12 @@ public class RaakaAineDao implements Dao<RaakaAine, Integer>{
     }
 
     public List<RaakaAine> findAll() throws SQLException {
+        List<RaakaAine> ainesosat = new ArrayList<>();
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM RaakaAine");
 
         ResultSet rs = stmt.executeQuery();
-        List<RaakaAine> ainesosat = new ArrayList<>();
+        
         while (rs.next()) {
             Integer id = rs.getInt("id");
             String nimi = rs.getString("nimi");
@@ -79,46 +82,25 @@ public class RaakaAineDao implements Dao<RaakaAine, Integer>{
 
     public RaakaAine saveOrUpdate(RaakaAine object) throws SQLException {
         RaakaAine findOne = findOne(object.getId());
-        
+
         if (findOne == null) {
-            
-            Connection c = database.getConnection();
-            PreparedStatement stmt = c.prepareStatement("INSERT INTO RaakaAine(nimi) VALUES (?)");
-            stmt.setString(1, object.getNimi());
-        
-            stmt.executeUpdate();
-            stmt.close();
-        
-            stmt = c.prepareStatement("SELECT * FROM RaakaAine WHERE nimi = ?");
-            
-            stmt.setString(1, object.getNimi());
-            
-            
-            ResultSet rs = stmt.executeQuery();
-            rs.next();
-            
-        
-            RaakaAine a = new RaakaAine(rs.getInt("id"), rs.getString("nimi"));
-        
-            stmt.close();
-            rs.close();
-            c.close();
-        
-            return a;
+
+            try (Connection conn = database.getConnection()) {
+                PreparedStatement stmt = conn.prepareStatement("INSERT INTO RaakaAine (nimi) VALUES (?)");
+                stmt.setString(1, object.getNimi());
+                stmt.executeUpdate();
+            }
+            return object;
         } else {
-            Connection c = database.getConnection();
-            PreparedStatement stmt = c.prepareStatement("UPDATE RaakaAine SET nimi = ? WHERE id = ?");
-            stmt.setString(1, object.getNimi());
-            stmt.setInt(2, object.getId());
-            
-            stmt.executeUpdate();
-            stmt.close();
-            c.close();
-            
+
+            try (Connection conn = database.getConnection()) {
+                PreparedStatement stmt = conn.prepareStatement("UPDATE RaakaAine SET nimi = ? WHERE id = ?");
+                stmt.setString(1, object.getNimi());
+                stmt.setInt(2, object.getId());
+                stmt.executeUpdate();
+            }
             return object;
         }
     }
 
-    
-    
 }

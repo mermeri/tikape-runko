@@ -9,7 +9,7 @@
         <ul>
             <li th:each="Drinkki : ${drinkit}">
                 <a th:href="@{~/drinkit/{id}(id=${Drinkki.id})}">
-                    <span th:text="${Drinkki.name}">Drinkki</span>
+                    <span th:text="${Drinkki.nimi}">Drinkki</span>
                 </a>
             </li>
         </ul>
