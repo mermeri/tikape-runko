@@ -81,40 +81,24 @@ public class DrinkkiDao implements Dao<Drinkki, Integer> {
     
     @Override
     public Drinkki saveOrUpdate(Drinkki object) throws SQLException {
-        
-        if (object.getId() == null) {
-            
+        Drinkki findOne = findOne(object.getId());
+
+        if (findOne == null) {
+
             try (Connection conn = database.getConnection()) {
-            PreparedStatement stmt = conn.prepareStatement("INSERT INTO Drinkki(nimi) VALUES (?)");
-            stmt.setString(1, object.getNimi());
-            stmt.executeUpdate();
-        }
-            
-            Connection c = database.getConnection();
-        
-            PreparedStatement stmt2 = c.prepareStatement("SELECT * FROM Drinkki WHERE nimi = ?");
-            stmt2.setString(1, object.getNimi());
-        
-            ResultSet rs = stmt2.executeQuery();
-            rs.next();
-        
-            Drinkki d = new Drinkki(rs.getInt("id"), rs.getString("nimi"));
-        
-            stmt2.close();
-            rs.close();
-            c.close();
-        
-            return d;
+                PreparedStatement stmt = conn.prepareStatement("INSERT INTO Drinkki (nimi) VALUES (?)");
+                stmt.setString(1, object.getNimi());
+                stmt.executeUpdate();
+            }
+            return object;
         } else {
-            Connection c = database.getConnection();
-            PreparedStatement stmt = c.prepareStatement("UPDATE Drinkki SET nimi = ? WHERE id = ?");
-            stmt.setString(1, object.getNimi());
-            stmt.setInt(2, object.getId());
-            
-            stmt.executeUpdate();
-            stmt.close();
-            c.close();
-            
+
+            try (Connection conn = database.getConnection()) {
+                PreparedStatement stmt = conn.prepareStatement("UPDATE Drinkki SET nimi = ? WHERE id = ?");
+                stmt.setString(1, object.getNimi());
+                stmt.setInt(2, object.getId());
+                stmt.executeUpdate();
+            }
             return object;
         }
     }

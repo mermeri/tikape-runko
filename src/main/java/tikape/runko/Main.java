@@ -25,7 +25,7 @@ public class Main {
         RaakaAineDao raakaAineDao = new RaakaAineDao(database);
         OhjeDao ohjeDao = new OhjeDao(database);
         
-        database.init();
+        
 
         Spark.get("/", (req, res) -> {
             HashMap map = new HashMap<>();
@@ -46,13 +46,14 @@ public class Main {
         Spark.get("/drinkit/:id", (req, res) -> {
             HashMap map = new HashMap<>();
             map.put("drinkit", drinkkiDao.findOne(Integer.parseInt(req.params(":id"))));
-
-            return new ModelAndView(map, "drinkinkinraaka-aineet");
+            map.put("RaakaAineet", raakaAineDao.findAll());
+            return new ModelAndView(map, "drinkinraaka-aineet");
         }, new ThymeleafTemplateEngine());
         
         Spark.get("/drinkit/", (req, res) -> {
             HashMap map = new HashMap<>();
-            map.put("drinkit", drinkkiDao.findOne(Integer.parseInt(req.params("id"))));
+            map.put("drinkit", drinkkiDao.findAll());
+            map.put("RaakaAineet", raakaAineDao.findAll());
 
             return new ModelAndView(map, "drinkit");
         }, new ThymeleafTemplateEngine());
@@ -60,7 +61,7 @@ public class Main {
         Spark.post("/raaka-aineet/", (req, res) -> {
             HashMap map = new HashMap<>();
             raakaAineDao.saveOrUpdate(new RaakaAine(-1, req.queryParams("aine")));
-            raakaAineDao.delete(Integer.parseInt(req.queryParams("id")));
+            
             System.out.println("lisätään aine");
             res.redirect("/raaka-aineet/");
             System.out.println("ohjataan päivittyneelle sivulle");
@@ -75,6 +76,26 @@ public class Main {
             System.out.println("ohjataan päivittyneelle sivulle");
             return"";
         });
+        
+        Spark.post("/:id/delete", (req, res) -> {
+            HashMap map = new HashMap<>();
+            drinkkiDao.delete(Integer.parseInt(req.params(":id")));
+            System.out.println("poistetaan drinkki");
+            res.redirect("/");
+            System.out.println("ohjataan päivittyneelle sivulle");
+            return"";
+        });
+        
+        Spark.post("/drinkit/", (req, res) -> {
+            HashMap map = new HashMap<>();
+            drinkkiDao.saveOrUpdate(new Drinkki(-1, req.queryParams("aine")));
+            System.out.println("lisätään drinkki");
+            res.redirect("/drinkit/");
+            System.out.println("ohjataan päivittyneelle sivulle");
+            return"";
+        });
+        
+        
         
         
     }

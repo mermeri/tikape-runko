@@ -7,20 +7,6 @@
 
         <h2>Drinkit</h2>
 
-        <ul>
-            <li th:each="Drinkki : ${drinkit}">
-
-                <a th:href="@{~/drinkit/{id}(id=${Drinkki.id})}">
-                    <span th:text="${drinkki.name}">Drinkki</span>
-                </a>
-                <a th:href="@{~/drinkit/{id}(id=${Drinkki.id})}">
-                    <span th:text="${Drinkki.name}">Drinkki</span>
-                    (poista)
-                </a>
-
-            </li>
-
-        </ul>
 
 
         <h4>Lisää uusi</h4>
@@ -36,19 +22,26 @@
         <form method="POST" action="">
             Drinkin nimi:<br/>
             <select name="Drinkki">
-                <li th:each="Drinkki : ${drinkit}">
-                    <option name={id}(id=${Drinkki.id}}>th:text="${Drinkki.name}</option>
-                </li>
+
+                <option th:each="Drinkki: ${drinkit}" th:text="${Drinkki.nimi}">
+
+                </option>
+
 
             </select>
             <br/>
             Lisättävä raaka-aine<br/>
+
+
             <select name="raakaAine">
-                <li th:each="Drinkki : ${drinkit}">
-                    <option name={id}(id=${Drinkki.id}}>th:text="${Drinkki.name}</option>
-                </li>
-                <option name="...">...</option>
+
+                <option th:each="RaakaAine: ${RaakaAineet}" th:text="${RaakaAine.nimi}">
+
+                </option>
+
+
             </select>
+
             <br/>
             Järjestys<br/>
             <input type="text"/><br/>
@@ -57,12 +50,15 @@
             Ohje<br/>
             <input type="text"/><br/>
             <input type="submit" value="Lisää"/>
+
         </form>
+
 
         <ul>
             <li>
-                <a href="drinkinraaka-aineet/">Drinkkilistaukseen</a>
+                <a href="../">Drinkkilistaukseen</a>
             </li>
         </ul>
+
     </body>
 </html>

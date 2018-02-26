@@ -2,25 +2,18 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title>Drinkin_raaka-aineet</title>
+        <title>Lisää drinkille ohje</title>
     </head>
     <body>
-        <h1 th:text="${drinkki.nimi}"></h1>
-
-
+        <h1 th:text="${drinkit.nimi}"></h1>
+        <h2>Kaytettavissa raaka-aineet</h2>
 
         <ul>
-            <li th:each="Drinkki : ${drinkit}">
-
-                <a th:href="@{~/drinkit/{id}(id=${Drinkki.id})}">
-                    <span th:text="${drinkki.nimi}">drinkki</span>
-                </a>
-                <a th:href="@{~/drinkit/{id}(id=${Drinkki.id})}">
-                    <span th:text="${Drinkki.nimi}">Drinkki</span>
-                    (poista)
-                </a>
-
+            <li th:each="RaakaAine : ${RaakaAineet}">
+                <span th:text="${RaakaAine.id}">id</span>
+                <span th:text="${RaakaAine.nimi}">Raaka-aine</span>
             </li>
+
         </ul>
 
     </body>
