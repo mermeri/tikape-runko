@@ -1,11 +1,11 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title>Lisää drinkille ohje</title>
+        <title>Lis&auml;&auml; drinkille ohje</title>
     </head>
     <body>
         <h1 th:text="${drinkit.nimi}"></h1>
-        <h2>Kaytettavissa olevat raaka-aineet</h2>
+        <h2>K&auml;ytett&auml;viss&auml; olevat raaka-aineet</h2>
 
         <ul>
             <li th:each="RaakaAine : ${RaakaAineet}">
@@ -16,7 +16,7 @@
         </ul>
 
 
-        <h4>Lisaa uusi ohje</h4>
+        <h4>Lis&auml;&auml; uusi ohje</h4>
 
         <form method="POST" action="">
             <select name="RaakaAine">
@@ -27,9 +27,9 @@
 
 
             </select>
-            Määrä:<br/>
+            M&auml;&auml;r&auml;:<br/>
             <input type="text" name="määrä"/><br/>
-            Järjestys<br/>
+            J&auml;rjestys<br/>
             <input type="text" name="järjestys"/><br/>
             Ohje<br/>
             <input type="text" name="ohje"/><br/>
