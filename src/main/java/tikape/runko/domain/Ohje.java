@@ -13,10 +13,10 @@ public class Ohje {
     private Integer drinkki_id;
     private Integer ainesosa_id;
     private Integer jarjestys;
-    private String maara;
+    private Integer maara;
     private String ohje;
     
-    public Ohje(Integer d_id, Integer a_id, Integer jarjestys, String maara, String ohje) {
+    public Ohje(Integer d_id, Integer a_id, Integer jarjestys, Integer maara, String ohje) {
         this.drinkki_id = d_id;
         this.ainesosa_id = a_id;
         this.jarjestys = jarjestys;
@@ -36,7 +36,7 @@ public class Ohje {
         this.jarjestys = j;
     }
     
-    public void setMaara(String maara) {
+    public void setMaara(Integer maara) {
         this.maara = maara;
     }
     
@@ -56,7 +56,7 @@ public class Ohje {
         return this.jarjestys;
     }
     
-    public String getMaara() {
+    public Integer getMaara() {
         return this.maara;
     }
     

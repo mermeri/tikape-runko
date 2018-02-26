@@ -39,7 +39,7 @@ public class OhjeDao implements Dao<Ohje, Integer> {
             Integer drinkki_id = rs.getInt("drinkki_id");
             Integer ainesosa_id = rs.getInt("ainesosa_id");
             Integer jarjestys = rs.getInt("jarjestys");
-            String maara = rs.getString("maara");
+            Integer maara = rs.getInt("maara");
             String ohje = rs.getString("ohje");
 
             ohjeet.add(new Ohje(drinkki_id, ainesosa_id, jarjestys, maara, ohje));
@@ -59,7 +59,20 @@ public class OhjeDao implements Dao<Ohje, Integer> {
 
     @Override
     public Ohje saveOrUpdate(Ohje object) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try (Connection conn = database.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement(
+                    "INSERT INTO Ohje (raaka_aine_id, drinkki_id, jarjestys, maara, ohje) VALUES (?, ?, ?, ?, ?)");
+            stmt.setInt(1, object.getAinesosa_id());
+            stmt.setInt(2, object.getDrinkki_id());
+            stmt.setInt(3, object.getJarjestys());
+            stmt.setInt(4, object.getMaara());
+            stmt.setString(5, object.geOhje());
+            
+            stmt.executeUpdate();
+        }
+
+        return null;
     }
+    
     
 }
