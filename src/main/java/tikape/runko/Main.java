@@ -52,7 +52,11 @@ public class Main {
         Spark.get("/drinkit/:id", (req, res) -> {
             HashMap map = new HashMap<>();
             map.put("drinkit", drinkkiDao.findOne(Integer.parseInt(req.params(":id"))));
-            map.put("RaakaAineet", raakaAineDao.findAll());
+
+            if (ohjeDao.findOne(Integer.parseInt(req.params(":id"))) != null) {
+                map.put("ohjeet", ohjeDao.findOne(Integer.parseInt(req.params(":id"))));
+            }
+            System.out.println(ohjeDao.findOne(Integer.parseInt(req.params(":id"))));
             return new ModelAndView(map, "drinkinraaka-aineet");
         }, new ThymeleafTemplateEngine());
 

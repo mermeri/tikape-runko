@@ -25,8 +25,30 @@ public class OhjeDao implements Dao<Ohje, Integer> {
 
     @Override
     public Ohje findOne(Integer key) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet");
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Ohje WHERE drinkki_id = ?");
+        stmt.setObject(1, key);
+
+        ResultSet rs = stmt.executeQuery();
+        boolean hasOne = rs.next();
+        if (!hasOne) {
+            return null;
+        }
+
+        Integer id = rs.getInt("raaka_aine_id");
+        Integer jarjestys = rs.getInt("jarjestys");
+        Integer maara = rs.getInt("maara");
+        String ohje = rs.getString("ohje");
+
+        Ohje o = new Ohje(id, key, jarjestys, maara, ohje);
+
+        rs.close();
+        stmt.close();
+        connection.close();
+
+        return o;
     }
+    
 
     @Override
     public List<Ohje> findAll() throws SQLException {
