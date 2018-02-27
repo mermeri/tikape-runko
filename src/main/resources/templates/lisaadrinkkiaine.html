@@ -19,14 +19,16 @@
         <h4>Lis&auml;&auml; uusi ohje</h4>
 
         <form method="POST" action="">
-            <select name="RaakaAine">
+            <select th:field="*{RaakaAine.id}">
 
                 <option
                     th:each="RaakaAine: ${RaakaAineet}" th:text="${RaakaAine.nimi}">
                 </option>
-
-
             </select>
+            
+            
+            Lisattavan raaka-aineen id:<br/>
+            <input type="text" name="id"/><br/>
             M&auml;&auml;r&auml;:<br/>
             <input type="text" name="määrä"/><br/>
             J&auml;rjestys<br/>
