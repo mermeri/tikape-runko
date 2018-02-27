@@ -54,8 +54,8 @@ public class Main {
             HashMap map = new HashMap<>();
             map.put("drinkit", drinkkiDao.findOne(Integer.parseInt(req.params(":id"))));
             
-                map.put("Ohjeet", ohjeDao.findAll(req.params(":id")));
-                map.put("ainesosat", ohjeDao.findAllR(req.params(":id")));
+                map.put("Ohjeet", ohjeDao.findAllO(req.params(":id")));
+                
             System.out.println(ohjeDao.findOne(Integer.parseInt(req.params(":id"))));
             return new ModelAndView(map, "drinkinraaka-aineet");
         }, new ThymeleafTemplateEngine());

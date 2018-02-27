@@ -7,17 +7,19 @@
     <body>
         <h1 th:text="${drinkit.nimi}"></h1>
         <h2>Ohje drinkin valmistukseen</h2>
+        <h5>Lisäysjärjestys, raaka-aine, lisättävä määrä, ohjekuvaus</h5>
 
-        <th:block th:each="Ohje : ${Ohjeet}" >
-            <tr th:each="Ohje : ${Ohjeet}">
-                
-                <td th:text="${Ohje.name}">A Smoke Test'</td>
-                <td th:text="${Ohje.name}">A Smoke Test'</td>
-                <td th:text="${Ohje.name}">A Smoke Test'</td>
-                
-            </tr>
-        </th:block>
         
+        <ul>
+            <li th:each="Ohje : ${Ohjeet}">
+                <span th:text="${Ohje.jarjestys}">Raaka-aine</span>
+                <span th:text="${Ohje.nimi}">id</span>
+                <span th:text="${Ohje.maara}">Raaka-aine</span>
+                <span th:text="${Ohje.ohje}">Raaka-aine</span>
+                
+            </li>
+
+        </ul>
 
     </body>
 </html>

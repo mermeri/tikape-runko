@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import tikape.runko.domain.DisplayOhje;
 import tikape.runko.domain.Ohje;
 /**
  *
@@ -106,6 +107,28 @@ public class OhjeDao implements Dao<Ohje, Integer> {
             String nimi = rs.getString("nimi");
 
             ohjeet.add(nimi);
+        }
+
+        rs.close();
+        stmt.close();
+        connection.close();
+
+        return ohjeet;
+    }
+    
+    public List<DisplayOhje> findAllO(String sana) throws SQLException {
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT RaakaAine.nimi, jarjestys, maara, ohje FROM Ohje, RaakaAine WHERE drinkki_id = " + sana + " AND RaakaAine.id = raaka_aine_id");
+
+        ResultSet rs = stmt.executeQuery();
+        List<DisplayOhje> ohjeet = new ArrayList<>();
+        while (rs.next()) {
+            String nimi = rs.getString("nimi");
+            Integer jarjestys = rs.getInt("jarjestys");
+            Integer maara = rs.getInt("maara");
+            String ohje = rs.getString("ohje");
+            
+            ohjeet.add(new DisplayOhje(nimi, jarjestys, maara, ohje));
         }
 
         rs.close();
