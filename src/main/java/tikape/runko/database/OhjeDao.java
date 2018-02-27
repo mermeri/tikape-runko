@@ -40,7 +40,7 @@ public class OhjeDao implements Dao<Ohje, Integer> {
         Integer maara = rs.getInt("maara");
         String ohje = rs.getString("ohje");
 
-        Ohje o = new Ohje(id, key, jarjestys, maara, ohje);
+        Ohje o = new Ohje(key, id, jarjestys, maara, ohje);
 
         rs.close();
         stmt.close();
@@ -50,7 +50,6 @@ public class OhjeDao implements Dao<Ohje, Integer> {
     }
     
 
-    @Override
     public List<Ohje> findAll() throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Ohje");
@@ -65,6 +64,48 @@ public class OhjeDao implements Dao<Ohje, Integer> {
             String ohje = rs.getString("ohje");
 
             ohjeet.add(new Ohje(drinkki_id, ainesosa_id, jarjestys, maara, ohje));
+        }
+
+        rs.close();
+        stmt.close();
+        connection.close();
+
+        return ohjeet;
+    }
+    
+    public List<Ohje> findAll(String sana) throws SQLException {
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Ohje WHERE drinkki_id = " + sana);
+
+        ResultSet rs = stmt.executeQuery();
+        List<Ohje> ohjeet = new ArrayList<>();
+        while (rs.next()) {
+            Integer drinkki_id = rs.getInt("drinkki_id");
+            Integer ainesosa_id = rs.getInt("raaka_aine_id");
+            Integer jarjestys = rs.getInt("jarjestys");
+            Integer maara = rs.getInt("maara");
+            String ohje = rs.getString("ohje");
+
+            ohjeet.add(new Ohje(drinkki_id, ainesosa_id, jarjestys, maara, ohje));
+        }
+
+        rs.close();
+        stmt.close();
+        connection.close();
+
+        return ohjeet;
+    }
+    
+    public List<String> findAllR(String sana) throws SQLException {
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT RaakaAine.nimi FROM Ohje, RaakaAine WHERE drinkki_id = " + sana + " AND RaakaAine.id = raaka_aine_id");
+
+        ResultSet rs = stmt.executeQuery();
+        List<String> ohjeet = new ArrayList<>();
+        while (rs.next()) {
+            String nimi = rs.getString("nimi");
+
+            ohjeet.add(nimi);
         }
 
         rs.close();
@@ -88,7 +129,7 @@ public class OhjeDao implements Dao<Ohje, Integer> {
             stmt.setInt(2, object.getDrinkki_id());
             stmt.setInt(3, object.getJarjestys());
             stmt.setInt(4, object.getMaara());
-            stmt.setString(5, object.geOhje());
+            stmt.setString(5, object.getOhje());
             
             stmt.executeUpdate();
         }

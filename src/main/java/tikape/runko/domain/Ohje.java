@@ -14,7 +14,7 @@ public class Ohje {
     private Integer ainesosa_id;
     private Integer jarjestys;
     private Integer maara;
-    private String ohje;
+    public String ohje;
     
     public Ohje(Integer d_id, Integer a_id, Integer jarjestys, Integer maara, String ohje) {
         this.drinkki_id = d_id;
@@ -60,7 +60,7 @@ public class Ohje {
         return this.maara;
     }
     
-    public String geOhje() {
+    public String getOhje() {
         return this.ohje;
     }
 }

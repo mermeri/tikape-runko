@@ -1,6 +1,7 @@
 package tikape.runko;
 
 import java.util.HashMap;
+import java.util.stream.Collectors;
 import spark.ModelAndView;
 import spark.Spark;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
@@ -52,10 +53,9 @@ public class Main {
         Spark.get("/drinkit/:id", (req, res) -> {
             HashMap map = new HashMap<>();
             map.put("drinkit", drinkkiDao.findOne(Integer.parseInt(req.params(":id"))));
-
-            if (ohjeDao.findOne(Integer.parseInt(req.params(":id"))) != null) {
-                map.put("ohjeet", ohjeDao.findOne(Integer.parseInt(req.params(":id"))));
-            }
+            
+                map.put("Ohjeet", ohjeDao.findAll(req.params(":id")));
+                map.put("ainesosat", ohjeDao.findAllR(req.params(":id")));
             System.out.println(ohjeDao.findOne(Integer.parseInt(req.params(":id"))));
             return new ModelAndView(map, "drinkinraaka-aineet");
         }, new ThymeleafTemplateEngine());
@@ -120,11 +120,11 @@ public class Main {
             System.out.println(req.queryParams("jarjestys"));
             System.out.println(req.queryParams("maara"));
             System.out.println(req.queryParams("ohje"));
-            ohjeDao.saveOrUpdate(new Ohje(Integer.parseInt(req.queryParams("numero")),
-                    Integer.parseInt(req.params(":id")),
+            ohjeDao.saveOrUpdate(new Ohje(Integer.parseInt(req.params(":id")),Integer.parseInt(req.queryParams("numero")),                 
                     Integer.parseInt(req.queryParams("jarjestys")),
                     Integer.parseInt(req.queryParams("maara")),
                     req.queryParams("ohje")));
+            
 
             res.redirect("/lisaadrinkkiaine/" + req.params("id"));
             return "";
