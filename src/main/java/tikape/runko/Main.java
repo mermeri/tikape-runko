@@ -111,14 +111,18 @@ public class Main {
 
         Spark.post("/lisaadrinkkiaine/:id", (req, res) -> {
             HashMap map = new HashMap<>();
-            System.out.println(req.params("name"));
-            ohjeDao.saveOrUpdate(new Ohje(Integer.parseInt(req.queryParams("id")),
+            System.out.println(req.queryParams("numero"));
+            System.out.println(req.params(":id"));
+            System.out.println(req.queryParams("jarjestys"));
+            System.out.println(req.queryParams("maara"));
+            System.out.println(req.queryParams("ohje"));
+            ohjeDao.saveOrUpdate(new Ohje(Integer.parseInt(req.queryParams("numero")),
                     Integer.parseInt(req.params(":id")),
-                    Integer.parseInt(req.queryParams("järjestys")),
-                    Integer.parseInt(req.queryParams("määrä")),
+                    Integer.parseInt(req.queryParams("jarjestys")),
+                    Integer.parseInt(req.queryParams("maara")),
                     req.queryParams("ohje")));
 
-            res.redirect("/lisaadrinkkiaine/:id");
+            res.redirect("/lisaadrinkkiaine/" + req.params("id"));
             return "";
         });
 
