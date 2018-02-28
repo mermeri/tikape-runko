@@ -169,6 +169,22 @@ public class Main {
             
             return "";
         });
+        
+        Spark.post("/raaka-aineet/", (req, res) -> {
+            try{
+                HashMap map = new HashMap<>();
+                if(req.queryParams("aine").isEmpty()){
+                    throw new Exception();
+                }
+                raakaAineDao.saveOrUpdate(new RaakaAine(-1, req.queryParams("aine")));
+                System.out.println("lisätään drinkki");
+                res.redirect("/raaka-aineet/");
+                System.out.println("ohjataan päivittyneelle sivulle");
+            }catch(Exception e){
+                res.redirect("/error/");
+            }
+            return "";
+        });
 
     }
 }
