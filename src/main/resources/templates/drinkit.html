@@ -17,41 +17,9 @@
             <input type="submit" value="Lis&auml;&auml;"/>
         </form>
 
-        <h4>Lis&auml;&auml; raaka-aineita</h4>
+        
 
-        <form method="POST" action="">
-            Drinkin nimi:<br/>
-            <select name="Drinkki">
-
-                <option th:each="Drinkki: ${drinkit}" th:text="${Drinkki.nimi}">
-
-                </option>
-
-
-            </select>
-            <br/>
-            Lis&auml;tt&auml;v&auml; raaka-aine<br/>
-
-
-            <select id="raakaAineId" name="raakaAine">
-
-                <option th:each="RaakaAine: ${RaakaAineet}" th:text="${RaakaAine.nimi}" th:values="${RaakaAine.id}">
-
-                </option>
-
-
-            </select>
-
-            <br/>
-            J&auml;rjestys<br/>
-            <input type="text"/><br/>
-            M&auml;&auml;r&auml;<br/>
-            <input type="text"/><br/>
-            Ohje<br/>
-            <input type="text"/><br/>
-            <input type="submit" value="Lis&auml;&auml;"/>
-
-        </form>
+        
 
 
         <ul>

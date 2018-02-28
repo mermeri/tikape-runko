@@ -67,32 +67,53 @@ public class Main {
 
             return new ModelAndView(map, "drinkit");
         }, new ThymeleafTemplateEngine());
-
-        Spark.post("/raaka-aineet/", (req, res) -> {
+        Spark.get("/drinkit/", (req, res) -> {
             HashMap map = new HashMap<>();
-            raakaAineDao.saveOrUpdate(new RaakaAine(-1, req.queryParams("aine")));
+            map.put("drinkit", drinkkiDao.findAll());
+            map.put("RaakaAineet", raakaAineDao.findAll());
 
-            System.out.println("lisätään aine");
-            res.redirect("/raaka-aineet/");
-            System.out.println("ohjataan päivittyneelle sivulle");
-            return "";
-        });
+            return new ModelAndView(map, "drinkit");
+        }, new ThymeleafTemplateEngine());
+
+        Spark.get("/error/", (req, res) -> {
+            HashMap map = new HashMap<>();
+            
+
+            return new ModelAndView(map, "error");
+        }, new ThymeleafTemplateEngine());
 
         Spark.post("/raaka-aineet/:id/delete", (req, res) -> {
-            HashMap map = new HashMap<>();
-            raakaAineDao.delete(Integer.parseInt(req.params(":id")));
-            System.out.println("poistetaan aine");
-            res.redirect("/raaka-aineet/");
-            System.out.println("ohjataan päivittyneelle sivulle");
+            try{
+                HashMap map = new HashMap<>();
+                if(req.params(":id").isEmpty()){
+                    throw new Exception();
+                }
+                raakaAineDao.delete(Integer.parseInt(req.params(":id")));
+                System.out.println("poistetaan aine");
+                res.redirect("/raaka-aineet/");
+                System.out.println("ohjataan päivittyneelle sivulle");
+            
+            }catch(Exception e){
+                res.redirect("/error/");
+            }
             return "";
+            
         });
 
         Spark.post("/:id/delete", (req, res) -> {
-            HashMap map = new HashMap<>();
-            drinkkiDao.delete(Integer.parseInt(req.params(":id")));
-            System.out.println("poistetaan drinkki");
-            res.redirect("/");
-            System.out.println("ohjataan päivittyneelle sivulle");
+            try{
+                HashMap map = new HashMap<>();
+                if(req.params(":id").isEmpty()){
+                    throw new Exception();
+                }
+                drinkkiDao.delete(Integer.parseInt(req.params(":id")));
+                System.out.println("poistetaan drinkki");
+                res.redirect("/");
+                System.out.println("ohjataan päivittyneelle sivulle");
+            }catch(Exception e){
+                res.redirect("/error/");
+            }
+            
             return "";
         });
 
@@ -105,28 +126,47 @@ public class Main {
         });
 
         Spark.post("/drinkit/", (req, res) -> {
-            HashMap map = new HashMap<>();
-            drinkkiDao.saveOrUpdate(new Drinkki(-1, req.queryParams("aine")));
-            System.out.println("lisätään drinkki");
-            res.redirect("/drinkit/");
-            System.out.println("ohjataan päivittyneelle sivulle");
+            try{
+                HashMap map = new HashMap<>();
+                if(req.queryParams("aine").isEmpty()){
+                    throw new Exception();
+                }
+                drinkkiDao.saveOrUpdate(new Drinkki(-1, req.queryParams("aine")));
+                System.out.println("lisätään drinkki");
+                res.redirect("/drinkit/");
+                System.out.println("ohjataan päivittyneelle sivulle");
+            }catch(Exception e){
+                res.redirect("/error/");
+            }
+            
             return "";
         });
 
         Spark.post("/lisaadrinkkiaine/:id", (req, res) -> {
-            HashMap map = new HashMap<>();
-            System.out.println(req.queryParams("numero"));
-            System.out.println(req.params(":id"));
-            System.out.println(req.queryParams("jarjestys"));
-            System.out.println(req.queryParams("maara"));
-            System.out.println(req.queryParams("ohje"));
-            ohjeDao.saveOrUpdate(new Ohje(Integer.parseInt(req.params(":id")),Integer.parseInt(req.queryParams("numero")),                 
-                    Integer.parseInt(req.queryParams("jarjestys")),
-                    Integer.parseInt(req.queryParams("maara")),
-                    req.queryParams("ohje")));
+            try{
+                HashMap map = new HashMap<>();
+                System.out.println(req.queryParams("numero"));
+                System.out.println(req.params(":id"));
+                System.out.println(req.queryParams("jarjestys"));
+                System.out.println(req.queryParams("maara"));
+                System.out.println(req.queryParams("ohje"));
+                if(req.params(":id").isEmpty() || req.queryParams("numero").isEmpty()
+                        || req.queryParams("jarjestys").isEmpty() 
+                        || req.queryParams("maara").isEmpty()
+                        || req.queryParams("ohje").isEmpty()){
+                    throw new Exception();
+                }
+                ohjeDao.saveOrUpdate(new Ohje(Integer.parseInt(req.params(":id")),Integer.parseInt(req.queryParams("numero")),                 
+                        Integer.parseInt(req.queryParams("jarjestys")),
+                        Integer.parseInt(req.queryParams("maara")),
+                        req.queryParams("ohje")));
             
 
             res.redirect("/lisaadrinkkiaine/" + req.params("id"));
+            }catch(Exception e){
+                res.redirect("/error/");
+            }
+            
             return "";
         });
 
