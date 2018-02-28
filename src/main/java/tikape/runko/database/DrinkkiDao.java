@@ -23,6 +23,7 @@ public class DrinkkiDao implements Dao<Drinkki, Integer> {
 
     @Override
     public Drinkki findOne(Integer key) throws SQLException {
+        
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Drinkki WHERE id = ?");
         stmt.setObject(1, key);
