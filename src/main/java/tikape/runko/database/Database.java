@@ -22,7 +22,7 @@ public class Database {
         return DriverManager.getConnection(dbUrl);
     }
 
-    return DriverManager.getConnection("");
+    return DriverManager.getConnection("jdbc:sqlite:drinkkiarkisto.db");
 }
   
 }
