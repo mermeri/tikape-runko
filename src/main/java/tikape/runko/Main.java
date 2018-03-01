@@ -53,9 +53,9 @@ public class Main {
         Spark.get("/drinkit/:id", (req, res) -> {
             HashMap map = new HashMap<>();
             map.put("drinkit", drinkkiDao.findOne(Integer.parseInt(req.params(":id"))));
-            
-                map.put("Ohjeet", ohjeDao.findAllO(req.params(":id")));
-                
+
+            map.put("Ohjeet", ohjeDao.findAllO(req.params(":id")));
+
             System.out.println(ohjeDao.findOne(Integer.parseInt(req.params(":id"))));
             return new ModelAndView(map, "drinkinraaka-aineet");
         }, new ThymeleafTemplateEngine());
@@ -77,49 +77,45 @@ public class Main {
 
         Spark.get("/error/", (req, res) -> {
             HashMap map = new HashMap<>();
-            
 
             return new ModelAndView(map, "error");
         }, new ThymeleafTemplateEngine());
 
         Spark.post("/raaka-aineet/:id/delete", (req, res) -> {
-            try{
+            
                 HashMap map = new HashMap<>();
-                if(req.params(":id").isEmpty()){
+                if (req.params(":id").isEmpty()) {
                     throw new Exception();
                 }
-                
+
                 ohjeDao.deleteRaakaAine(Integer.parseInt(req.params(":id")));
                 raakaAineDao.delete(Integer.parseInt(req.params(":id")));
                 System.out.println("poistetaan aine");
                 res.redirect("/raaka-aineet/");
                 System.out.println("ohjataan päivittyneelle sivulle");
-            
-            }catch(Exception e){
-                res.redirect("/error/");
-            }
+
             return "";
-            
+
         });
 
         Spark.post("/:id/delete", (req, res) -> {
-         try {
+            try {
                 HashMap map = new HashMap<>();
-                if(req.params(":id").isEmpty()){
+                if (req.params(":id").isEmpty()) {
                     throw new Exception();
                 }
-                if (ohjeDao.findOne(Integer.parseInt(req.params(":id"))) != null){
+                if (ohjeDao.findOne(Integer.parseInt(req.params(":id"))) != null) {
                     ohjeDao.delete(Integer.parseInt(req.params(":id")));
                 }
-                
+
                 drinkkiDao.delete(Integer.parseInt(req.params(":id")));
                 System.out.println("poistetaan drinkki");
                 res.redirect("/");
                 System.out.println("ohjataan päivittyneelle sivulle");
-         } catch(Exception e) {
-             res.redirect("/error/");
-         }
-            
+            } catch (Exception e) {
+                res.redirect("/error/");
+            }
+
             return "";
         });
 
@@ -132,67 +128,65 @@ public class Main {
         });
 
         Spark.post("/drinkit/", (req, res) -> {
-            try{
+            try {
                 HashMap map = new HashMap<>();
-                if(req.queryParams("aine").isEmpty()){
+                if (req.queryParams("aine").isEmpty()) {
                     throw new Exception();
                 }
                 drinkkiDao.saveOrUpdate(new Drinkki(-1, req.queryParams("aine")));
                 System.out.println("lisätään drinkki");
                 res.redirect("/drinkit/");
                 System.out.println("ohjataan päivittyneelle sivulle");
-            }catch(Exception e){
+            } catch (Exception e) {
                 res.redirect("/error/");
             }
-            
+
             return "";
         });
 
         Spark.post("/lisaadrinkkiaine/:id", (req, res) -> {
-            try{
+            try {
                 HashMap map = new HashMap<>();
                 System.out.println(req.queryParams("numero"));
                 System.out.println(req.params(":id"));
                 System.out.println(req.queryParams("jarjestys"));
                 System.out.println(req.queryParams("maara"));
                 System.out.println(req.queryParams("ohje"));
-                if(req.params(":id").isEmpty() || req.queryParams("numero").isEmpty()
-                        || req.queryParams("jarjestys").isEmpty() 
+                if (req.params(":id").isEmpty() || req.queryParams("numero").isEmpty()
+                        || req.queryParams("jarjestys").isEmpty()
                         || req.queryParams("maara").isEmpty()
-                        || req.queryParams("ohje").isEmpty()){
+                        || req.queryParams("ohje").isEmpty()) {
                     throw new Exception();
                 }
-                ohjeDao.saveOrUpdate(new Ohje(Integer.parseInt(req.params(":id")),Integer.parseInt(req.queryParams("numero")),                 
+                ohjeDao.saveOrUpdate(new Ohje(Integer.parseInt(req.params(":id")), Integer.parseInt(req.queryParams("numero")),
                         Integer.parseInt(req.queryParams("jarjestys")),
                         Integer.parseInt(req.queryParams("maara")),
                         req.queryParams("ohje")));
-            
 
-            res.redirect("/lisaadrinkkiaine/" + req.params("id"));
-            }catch(Exception e){
+                res.redirect("/lisaadrinkkiaine/" + req.params("id"));
+            } catch (Exception e) {
                 res.redirect("/error/");
             }
-            
+
             return "";
         });
-        
+
         Spark.post("/raaka-aineet/", (req, res) -> {
-            try{
+            try {
                 HashMap map = new HashMap<>();
-                if(req.queryParams("aine").isEmpty()){
+                if (req.queryParams("aine").isEmpty()) {
                     throw new Exception();
                 }
                 raakaAineDao.saveOrUpdate(new RaakaAine(-1, req.queryParams("aine")));
                 System.out.println("lisätään drinkki");
                 res.redirect("/raaka-aineet/");
                 System.out.println("ohjataan päivittyneelle sivulle");
-            }catch(Exception e){
+            } catch (Exception e) {
                 res.redirect("/error/");
             }
             return "";
-            
+
         });
-        
 
     }
 }
