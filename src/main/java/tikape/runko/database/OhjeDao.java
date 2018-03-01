@@ -50,6 +50,35 @@ public class OhjeDao implements Dao<Ohje, Integer> {
         return o;
     }
     
+    public Ohje findOneRaakaAine(Integer key) throws SQLException {
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Ohje WHERE raaka_aine_id = ?");
+        stmt.setObject(1, key);
+
+        ResultSet rs = stmt.executeQuery();
+        boolean hasOne = rs.next();
+        if (!hasOne) {
+            return null;
+        }
+
+        Integer id = rs.getInt("raaka_aine_id");
+        Integer jarjestys = rs.getInt("jarjestys");
+        Integer maara = rs.getInt("maara");
+        String ohje = rs.getString("ohje");
+
+        Ohje o = new Ohje(key, id, jarjestys, maara, ohje);
+
+        rs.close();
+        stmt.close();
+        connection.close();
+
+        return o;
+    }
+    
+    
+    
+    
+    
 
     public List<Ohje> findAll() throws SQLException {
         Connection connection = database.getConnection();
@@ -142,6 +171,16 @@ public class OhjeDao implements Dao<Ohje, Integer> {
     public void delete(Integer key) throws SQLException {
         Connection c = database.getConnection();
         PreparedStatement stmt = c.prepareStatement("DELETE FROM Ohje WHERE drinkki_id = ?");
+
+        stmt.setInt(1, key);
+        stmt.executeUpdate();
+
+        stmt.close();
+        c.close();
+    }
+    public void deleteRaakaAine(Integer key) throws SQLException {
+        Connection c = database.getConnection();
+        PreparedStatement stmt = c.prepareStatement("DELETE FROM Ohje WHERE raaka_aine_id = ?");
 
         stmt.setInt(1, key);
         stmt.executeUpdate();

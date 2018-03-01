@@ -88,6 +88,8 @@ public class Main {
                 if(req.params(":id").isEmpty()){
                     throw new Exception();
                 }
+                
+                ohjeDao.deleteRaakaAine(Integer.parseInt(req.params(":id")));
                 raakaAineDao.delete(Integer.parseInt(req.params(":id")));
                 System.out.println("poistetaan aine");
                 res.redirect("/raaka-aineet/");
