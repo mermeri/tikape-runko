@@ -141,7 +141,7 @@ public class OhjeDao implements Dao<Ohje, Integer> {
     
     public void delete(Integer key) throws SQLException {
         Connection c = database.getConnection();
-        PreparedStatement stmt = c.prepareStatement("DELETE * FROM Ohje WHERE drinkki.id = ?");
+        PreparedStatement stmt = c.prepareStatement("DELETE FROM Ohje WHERE drinkki_id = ?");
 
         stmt.setInt(1, key);
         stmt.executeUpdate();
