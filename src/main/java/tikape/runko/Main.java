@@ -106,7 +106,10 @@ public class Main {
                 if(req.params(":id").isEmpty()){
                     throw new Exception();
                 }
-                ohjeDao.delete(Integer.parseInt(req.params(":id")));
+                if (ohjeDao.findOne(Integer.parseInt(req.params(":id"))) != null){
+                    ohjeDao.delete(Integer.parseInt(req.params(":id")));
+                }
+                
                 drinkkiDao.delete(Integer.parseInt(req.params(":id")));
                 System.out.println("poistetaan drinkki");
                 res.redirect("/");
