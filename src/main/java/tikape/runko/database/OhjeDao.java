@@ -138,9 +138,16 @@ public class OhjeDao implements Dao<Ohje, Integer> {
         return ohjeet;
     }
 
-    @Override
+    
     public void delete(Integer key) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Connection c = database.getConnection();
+        PreparedStatement stmt = c.prepareStatement("DELETE * FROM Ohje WHERE drinkki.id = ?");
+
+        stmt.setInt(1, key);
+        stmt.executeUpdate();
+
+        stmt.close();
+        c.close();
     }
 
     @Override
@@ -159,6 +166,4 @@ public class OhjeDao implements Dao<Ohje, Integer> {
 
         return null;
     }
-    
-    
 }

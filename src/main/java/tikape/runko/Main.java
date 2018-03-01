@@ -101,18 +101,19 @@ public class Main {
         });
 
         Spark.post("/:id/delete", (req, res) -> {
-            try{
+         try {
                 HashMap map = new HashMap<>();
                 if(req.params(":id").isEmpty()){
                     throw new Exception();
                 }
+                ohjeDao.delete(Integer.parseInt(req.params(":id")));
                 drinkkiDao.delete(Integer.parseInt(req.params(":id")));
                 System.out.println("poistetaan drinkki");
                 res.redirect("/");
                 System.out.println("ohjataan päivittyneelle sivulle");
-            }catch(Exception e){
-                res.redirect("/error/");
-            }
+         } catch(Exception e) {
+             res.redirect("/error/");
+         }
             
             return "";
         });
